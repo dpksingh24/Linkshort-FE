@@ -4,7 +4,7 @@ import UrlForm from './components/UrlForm';
 const App = () => {
   return (
     <div>
-      <h1>URL Shortener</h1>
+      <h1 style={{ textAlign: 'center', margin: '20px 0' }}>URL Shortener</h1>
         <UrlForm />
     </div>
   );
