@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# URL Shortener Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project includes both a backend API built with Ruby on Rails and a frontend interface built with React. The backend handles URL shortening functionalities, while the frontend allows users to interact with the API.
 
-## Available Scripts
+## Backend
 
-In the project directory, you can run:
+The backend code repository can be found at [dpksingh24/linkshort](https://github.com/dpksingh24/linkshort). It provides a set of RESTful APIs for managing shortened URLs.
 
-### `npm start`
+### Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Clone the Repository**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+   ```sh
+   git clone https://github.com/dpksingh24/linkshort.git
+   cd linkshort
+   ```
 
-### `npm test`
+2. **Install Dependencies**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```sh
+   bundle install
+   ```
 
-### `npm run build`
+3. **Database Setup**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```sh
+   rails db:create
+   rails db:migrate
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Start the Server**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```sh
+   rails server
+   ```
 
-### `npm run eject`
+   The backend API will be accessible at `http://localhost:3000`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### API Endpoints
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- `POST /urls`: Create a new short URL
+- `GET /urls`: Retrieve all URLs (newest first)
+- `GET /urls/top_urls`: Get top 3 URLs by access count
+- `GET /urls/top_level_domain`: Count top-level domains
+- `DELETE /urls/:id`: Delete a URL by ID
+- `GET /:slug`: Redirect to the original URL based on the short URL slug
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Frontend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The frontend is built using React and communicates with the backend API to provide a user-friendly interface for URL shortening.
 
-## Learn More
+### Getting Started with the Frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Create a New React App**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```sh
+   npx create-react-app url-shortener-frontend
+   cd url-shortener-frontend
+   ```
 
-### Code Splitting
+2. **Install Axios for API Requests**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```sh
+   npm install axios
+   ```
 
-### Analyzing the Bundle Size
+3. **Set Up Environment Variables**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   Create a `.env` file in the root of your React project:
 
-### Making a Progressive Web App
+   ```plaintext
+   REACT_APP_API_BASE_URL=''
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+4. **Start the React Development Server**
 
-### Advanced Configuration
+   ```sh
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   The React frontend will be served at `http://localhost:3001`.
 
-### Deployment
+### Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **URLForm Component**: Allows users to input a long URL and receive a shortened URL.
+- **URLList Component**: Displays a list of shortened URLs with their corresponding original URLs and creation timestamps.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This README provides a high-level overview of your URL shortener project, guiding both developers and users on how to set up and interact with both the backend API and the React frontend. Adjust the URLs and setup instructions as per your specific project details.
