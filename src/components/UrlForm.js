@@ -95,22 +95,23 @@ return (
     />
     <button onClick={handleSearch} style={{ padding: '10px 20px', marginBottom: '20px' }}>Search</button>
     <div className="search-results">
-        <strong>Search Results:</strong>
+    {searchedUrls.length > 0 && (
+    <div className="search-results">
+        <h3>Search Results:</h3>
         <ul>
-        {searchedUrls.length > 0 ? (
-            searchedUrls.map((url) => (
-            <li key={url.id}>
-                <strong>Actual URL:</strong> {url.name}
-                <br />
-                <strong>Slug:</strong> {url.slug}
-                <br />
-                <strong>count:</strong> {url.count}
-            </li>
-            ))
-        ) : (
-            <p>No search results</p>
-        )}
+            {searchedUrls.map((url) => (
+                <li key={url.id}>
+                    <strong>Actual URL:</strong> {url.name}
+                    <br />
+                    <strong>Slug:</strong> {url.slug}
+                    <br />
+                    <strong>Count:</strong> {url.count}
+                </li>
+            ))}
         </ul>
+    </div>
+    )}
+
     </div>
 {/* search bar end */}
 
@@ -133,6 +134,7 @@ return (
     </form>
 
     <ul className="url-list">
+    <strong>All URLs</strong>
     {urls.map((url) => (
         <li key={url.id}>
             <strong>Actual URL:</strong> {url.name}
