@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { createUrl, getUrls, deleteUrl, getTopLevelDomains } from '../services/urlService';
+import { createUrl, getUrls, deleteUrl, getTopLevelDomains, searchUrls } from '../services/urlService';
 
 const UrlList = () => {
 const [urls, setUrls] = useState([]);
 const [name, setName] = useState('');
 const [expiresAt, setExpiresAt] = useState('');
 const [topLevelDomains, setTopLevelDomains] = useState([]);
+const [searchTerm, setSearchTerm] = useState('');
+const [searchedUrls, setSearchedUrls] = useState([]);
+
 
 // Function to handle form submission
 const handleSubmit = async (event) => {
@@ -63,6 +66,16 @@ const handleDelete = async (id) => {
     }
 };
 
+// Function to search URLs from API
+const handleSearch = async () => {
+    try {
+    const result = await searchUrls(searchTerm);
+    setSearchedUrls(result);
+    } catch (error) {
+    console.error('Error fetching URL by name:', error);
+    }
+};
+
 // Fetch URLs on component mount
 useEffect(() => {
     fetchUrls();
@@ -71,6 +84,36 @@ useEffect(() => {
 
 return (
 <div className="container">
+
+{/* search bar start */}
+    <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search URL"
+        style={{ marginBottom: '20px', padding: '10px', width: '80%' }}
+    />
+    <button onClick={handleSearch} style={{ padding: '10px 20px', marginBottom: '20px' }}>Search</button>
+    <div className="search-results">
+        <strong>Search Results:</strong>
+        <ul>
+        {searchedUrls.length > 0 ? (
+            searchedUrls.map((url) => (
+            <li key={url.id}>
+                <strong>Actual URL:</strong> {url.name}
+                <br />
+                <strong>Slug:</strong> {url.slug}
+                <br />
+                <strong>count:</strong> {url.count}
+            </li>
+            ))
+        ) : (
+            <p>No search results</p>
+        )}
+        </ul>
+    </div>
+{/* search bar end */}
+
     <form onSubmit={handleSubmit} className='url-form'>
     <input
         type="text"
@@ -88,12 +131,15 @@ return (
     />
     <button type="submit">Shorten URL</button>
     </form>
+
     <ul className="url-list">
     {urls.map((url) => (
         <li key={url.id}>
             <strong>Actual URL:</strong> {url.name}
         <br />
             <strong>Slug:</strong> {url.slug}
+        <br />
+            <strong>count:</strong> {url.count}
         <br />
             <button onClick={() => handleDelete(url.id)}>Delete</button>
         </li>
