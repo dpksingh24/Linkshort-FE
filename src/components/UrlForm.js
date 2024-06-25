@@ -77,11 +77,17 @@ const handleSearch = async () => {
     }
 };
 
+// Function to clear search results
+const clearSearchResults = () => {
+    setSearchedUrls([]);
+    setSearchTerm('');
+};
+
 // Fetch URLs on component mount
 useEffect(() => {
     fetchUrls();
     fetchTopLevelDomains();
-}, []); // Empty dependency array ensures this runs once on mount
+}, []);
 
 return (
     <div className="container">
@@ -96,14 +102,19 @@ return (
         <button onClick={handleSearch}>Search</button>
         </div>
         <div className="search-results">
-        <strong>Search Results:</strong>
+            <div className="search-results-header">
+                <strong>Search Results:</strong>
+                {searchedUrls.length > 0 && (
+                    <button className="clear-button" onClick={clearSearchResults}>X</button>
+                )}
+            </div>
             <ul>
                 {searchedUrls.length > 0 ? (
                 searchedUrls.map((url) => (
                     <li key={url.id}>
                     <strong>Actual URL:</strong> {url.name}
                     <br />
-                    <strong>Slug:</strong> {url.slug}
+                    <strong>Slug:</strong><a href={`${BASE_URL}/${url.slug}`} target="_blank" rel="noopener noreferrer">{`${BASE_URL}/${url.slug}`}</a>
                     <br />
                     <strong>Count:</strong> {url.count}
                     </li>
@@ -111,6 +122,7 @@ return (
                 ) : (
                 <p>No search results</p>
                 )}
+
             </ul>
         </div>
 
