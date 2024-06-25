@@ -42,17 +42,17 @@ const fetchUrls = async () => {
 // Function to get all top level domains from API
 const fetchTopLevelDomains = async () => {
     try {
-      const domains = await getTopLevelDomains();
-      console.log(domains);
-      const domainArray = Object.keys(domains).map(key=>({
+        const domains = await getTopLevelDomains();
+        console.log(domains);
+        const domainArray = Object.keys(domains).map(key=>({
         domain: key,
         count: domains[key]
-      }));
-      setTopLevelDomains(domainArray || []);
+        }));
+        setTopLevelDomains(domainArray || []);
     } catch (error) {
-      console.error('Error fetching top level domains:', error);
+        console.error('Error fetching top level domains:', error);
     }
-  };
+};
 
 // Function to delete URLs from API
 const handleDelete = async (id) => {
@@ -83,78 +83,83 @@ useEffect(() => {
 }, []); // Empty dependency array ensures this runs once on mount
 
 return (
-<div className="container">
-
-{/* search bar start */}
-    <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search URL"
-        style={{ marginBottom: '20px', padding: '10px', width: '80%' }}
-    />
-    <button onClick={handleSearch} style={{ padding: '10px 20px', marginBottom: '20px' }}>Search</button>
-    <div className="search-results">
+    <div className="container">
+      {/* Search Bar */}
+        <div className="search-bar">
+            <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search URL"
+            />
+        <button onClick={handleSearch}>Search</button>
+        </div>
+        <div className="search-results">
         <strong>Search Results:</strong>
+            <ul>
+                {searchedUrls.length > 0 ? (
+                searchedUrls.map((url) => (
+                    <li key={url.id}>
+                    <strong>Actual URL:</strong> {url.name}
+                    <br />
+                    <strong>Slug:</strong> {url.slug}
+                    <br />
+                    <strong>Count:</strong> {url.count}
+                    </li>
+                ))
+                ) : (
+                <p>No search results</p>
+                )}
+            </ul>
+        </div>
+
+      {/* URL Form */}
+        <form onSubmit={handleSubmit} className="url-form">
+        <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="URL"
+            required
+        />
+        <input
+            type="datetime-local"
+            value={expiresAt}
+            onChange={(e) => setExpiresAt(e.target.value)}
+            placeholder="Expires At"
+        />
+        <button type="submit">Shorten URL</button>
+        </form>
+
+      {/* URL List */}
+        <div className="url-list">
+        <strong>All URLs:</strong>
         <ul>
-        {searchedUrls.length > 0 ? (
-            searchedUrls.map((url) => (
+            {urls.map((url) => (
             <li key={url.id}>
                 <strong>Actual URL:</strong> {url.name}
                 <br />
                 <strong>Slug:</strong> {url.slug}
                 <br />
-                <strong>count:</strong> {url.count}
+                <strong>Count:</strong> {url.count}
+                <br />
+                <button onClick={() => handleDelete(url.id)}>Delete</button>
             </li>
-            ))
-        ) : (
-            <p>No search results</p>
-        )}
+            ))}
         </ul>
+        </div>
+
+      {/* Top Level Domains */}
+        <div className="top-level-domains">
+        <strong>Top Level Domains:</strong>
+            <ul>
+                {topLevelDomains.map((domain, index) => (
+                <li key={index}>{domain.domain} ({domain.count})</li>
+                ))}
+            </ul>
+        </div>
     </div>
-{/* search bar end */}
-
-    <form onSubmit={handleSubmit} className='url-form'>
-    <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="URL"
-        required
-    />
-    <input
-        type="datetime-local"
-        value={expiresAt}
-        onChange={(e) => setExpiresAt(e.target.value)}
-        placeholder="Expires At"
-        required
-    />
-    <button type="submit">Shorten URL</button>
-    </form>
-
-    <ul className="url-list">
-    <strong>All URLs:</strong>
-    {urls.map((url) => (
-        <li key={url.id}>
-            <strong>Actual URL:</strong> {url.name}
-        <br />
-            <strong>Slug:</strong> {url.slug}
-        <br />
-            <strong>count:</strong> {url.count}
-        <br />
-            <button onClick={() => handleDelete(url.id)}>Delete</button>
-        </li>
-    ))}
-    </ul>
-    <br />
-    <ul className="top-level-domains">
-    <strong>Top Level Domains</strong>
-    {topLevelDomains.map((domain, index) => (
-        <li key={index}>{domain.domain} ({domain.count})</li>
-    ))}
-    </ul>
-</div>
-);
+    );
 };
 
 export default UrlList;
