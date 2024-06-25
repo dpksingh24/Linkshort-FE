@@ -9,6 +9,7 @@ const [topLevelDomains, setTopLevelDomains] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
 const [searchedUrls, setSearchedUrls] = useState([]);
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Function to handle form submission
 const handleSubmit = async (event) => {
@@ -31,12 +32,12 @@ const newUrl = { name, expires_at: expiresAt };
 const fetchUrls = async () => {
     try {
         const response = await getUrls();
-        // Sort URLs by created_at descending order (newest first)
+        console.log('Fetched URLs:', response);
         const sortedUrls = response.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setUrls(sortedUrls);
     } catch (error) {
         console.error('Error fetching URLs:', error);
-    }
+        }
 };
 
 // Function to get all top level domains from API
@@ -139,9 +140,9 @@ return (
             <li key={url.id}>
                 <strong>Actual URL:</strong> {url.name}
                 <br />
-                <strong>Slug:</strong> {url.slug}
+                <strong>Slug:</strong><a href={`${BASE_URL}/${url.slug}`} target="_blank" rel="noopener noreferrer">{`${BASE_URL}/${url.slug}`}</a>
                 <br />
-                <strong>Count:</strong> {url.count}
+                <strong>Count:</strong>{url.count}
                 <br />
                 <button onClick={() => handleDelete(url.id)}>Delete</button>
             </li>
