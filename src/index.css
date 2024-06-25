@@ -132,9 +132,12 @@ body {
 /* URL List styles */
 .url-list {
   list-style: none;
-  padding: 0;
   text-align: left;
-  margin-top: 20px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background-color: #e9f7fa;
 }
 
 .url-list strong {
@@ -171,12 +174,63 @@ body {
   background-color: #c82333;
 }
 
-/* Top Level Domains styles */
-.top-level-domains {
+
+/* top url css */
+.top-url-list {
   list-style: none;
   padding: 0;
   text-align: left;
   margin-top: 20px;
+}
+
+.top-url-list {
+  background: #e8f5e9;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.top-url-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.top-url-list li {
+  background: #f9f9f9;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.top-url-list button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.top-url-list button:hover {
+  background-color: #c82333;
+}
+
+
+/* Top Level Domains styles */
+.top-level-domains {
+  list-style: none;
+  text-align: left;
+  background: #fffde7;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  word-break: break-all;
 }
 
 .top-level-domains strong {

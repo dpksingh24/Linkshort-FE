@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createUrl, getUrls, deleteUrl, getTopLevelDomains, searchUrls } from '../services/urlService';
+import { createUrl, getUrls, deleteUrl, getTopLevelDomains, searchUrls, getTopUrls } from '../services/urlService';
 
 const UrlList = () => {
 const [urls, setUrls] = useState([]);
+const [topUrls, setTopUrls] = useState([]);
 const [name, setName] = useState('');
 const [expiresAt, setExpiresAt] = useState('');
 const [topLevelDomains, setTopLevelDomains] = useState([]);
@@ -39,6 +40,17 @@ const fetchUrls = async () => {
         console.error('Error fetching URLs:', error);
         }
 };
+
+// Function to fetch top URLs from API
+const fetchTopUrls = async () => {
+    try {
+        const response = await getTopUrls();
+        setTopUrls(response);
+    } catch (error) {
+        console.error('Error fetching top URLs:', error);
+    }
+};
+
 
 // Function to get all top level domains from API
 const fetchTopLevelDomains = async () => {
@@ -86,6 +98,7 @@ const clearSearchResults = () => {
 // Fetch URLs on component mount
 useEffect(() => {
     fetchUrls();
+    fetchTopUrls();
     fetchTopLevelDomains();
 }, []);
 
@@ -160,6 +173,22 @@ return (
             </li>
             ))}
         </ul>
+        </div>
+
+        {/* Top URLs */}
+        <div className="top-url-list">
+            <strong>Top URLs:</strong>
+            <ul>
+                {topUrls.map((url) => (
+                    <li key={url.id}>
+                        <strong>Actual URL:</strong> {url.name}
+                        <br />
+                        <strong>Slug:</strong><a href={`${BASE_URL}/${url.slug}`} target="_blank" rel="noopener noreferrer">{`${BASE_URL}/${url.slug}`}</a>
+                        <br />
+                        <strong>Count:</strong> {url.count}
+                    </li>
+                ))}
+            </ul>
         </div>
 
       {/* Top Level Domains */}
