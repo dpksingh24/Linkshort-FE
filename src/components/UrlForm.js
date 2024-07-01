@@ -13,6 +13,9 @@ const [searchedUrls, setSearchedUrls] = useState([]);
 const [formVisible, setFormVisible] = useState(true);
 
 const [loading, setLoading] = useState(false);
+const [uRLSlug, setuRLSlug] = useState('');
+const [uRLCount, setuRLCount] = useState(0);
+const [urlName, setUrlName] = useState('');
 
 const navigate = useNavigate();
 
@@ -21,32 +24,33 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Function to handle form submission
 const handleSubmit = async (event) => {
 
-    event.preventDefault();
-    setLoading(true);
+event.preventDefault();
+setLoading(true);
 
-    const newUrl = { name, expires_at: expiresAt };
-        try {
-            const response = await createUrl(newUrl);
-            console.log('URL created:', response);
-            setUrls([response, ...urls]); // Add the new URL to the beginning of the list
-            // const { count, slug } = urls[0]
-            setName('');
-            setExpiresAt('');
-            setFormVisible(false);
+const newUrl = { name, expires_at: expiresAt };
+    try {
+        const response = await createUrl(newUrl);
+        setUrls([response, ...urls]); // Add the new URL to the beginning of the list
 
-            const {slug, count} = await getSlugAndCount(response.id);
-            console.log('Slug and Count:', slug, count);
+        setName('');
+        setExpiresAt('');
+        setFormVisible(false);
 
-            const queryParams = new URLSearchParams();
-            queryParams.append('name', name);
-            queryParams.append('expiresAt', expiresAt);
-            navigate(`/url-manager?${queryParams.toString()}`);
+        const {slug, count} = await getSlugAndCount(response.id);
+        setuRLSlug(slug);
+        setuRLCount(count);
+        setUrlName(response.name);
 
-        } catch (error) {
-            console.error('Error creating URL:', error);
-        } finally {
-            setLoading(false); // Set loading to false when form submission ends
-        }
+        const queryParams = new URLSearchParams();
+        queryParams.append('name', name);
+        queryParams.append('expiresAt', expiresAt);
+        navigate(`/url-manager?${queryParams.toString()}`);
+
+    } catch (error) {
+        console.error('Error creating URL:', error);
+    } finally {
+        setLoading(false);
+    }
 };
 
 // Function to fetch URLs from API
@@ -104,11 +108,11 @@ const handleDelete = async (id) => {
 // Function to copy the slug url
 const handleCopy = (url) => {
     navigator.clipboard.writeText(url).then(() => {
-      alert('URL copied to clipboard');
+        alert('URL copied to clipboard');
     }).catch((error) => {
-      console.error('Error copying URL:', error);
+        console.error('Error copying URL:', error);
     });
-  };
+};
 
 // Function to search URLs from API
 const handleSearch = async () => {
@@ -254,7 +258,7 @@ useEffect(() => {
                 </a>
                 </div>
                 <ul>
-                <li><a href="#">Find Top Level Domains</a></li>
+                <li><a href="#">Top Level Domains</a></li>
                 <li><a href="#">About Us</a></li>
                 </ul>
                 <ul>
@@ -270,7 +274,7 @@ useEffect(() => {
             <nav className="mobile-menu">
             <div className="mobile-menu-main">
                 <ul>
-                    <li><a href="#">Find Top Level Domains</a></li>
+                    <li><a href="#">Top Level Domains</a></li>
                     <li><a href="#">About Us</a></li>
                 </ul>
                 <ul>
@@ -307,17 +311,17 @@ useEffect(() => {
             urls.length > 0 && (  // Check if urls array has items
                 <div className="url-details-container">
                 <div className="url-info">
-                    <strong>Actual URL:</strong> {urls[0].name}
+                    <strong>Actual URL:</strong> {urlName}
                 </div>
-                {slug && urls[0].count !== undefined (
+                {uRLSlug && (
                     <div className="url-info">
-                    <strong>Slug:</strong> {`${BASE_URL}/${urls[0].slug}`}
-                    <button className="copy-button" onClick={() => handleCopy(`${BASE_URL}/${urls[0].slug}`)}>Copy</button>
+                    <strong>Slug:</strong> {`${BASE_URL}/${uRLSlug}`}
+                    <button className="copy-button" onClick={() => handleCopy(`${BASE_URL}/${uRLSlug}`)}>Copy</button>
                     </div>
                 )}
-                {count !== undefined && (
+                {uRLCount && (
                     <div className="url-info">
-                    <strong>Count:</strong> {urls[0].count}
+                    <strong>Count:</strong> {uRLCount}
                     </div>
                 )}
                 <div className="url-info">
@@ -349,7 +353,7 @@ useEffect(() => {
             </ul>
             <div className="user-content">
                 <div className="user-img">
-                <img src="https://rvs-hosterr-waitlist-page.vercel.app/Assets/Help-Avatar.svg" alt="" />
+                <img src="https://media.licdn.com/dms/image/D5635AQEg47d9HH0-FQ/profile-framedphoto-shrink_400_400/0/1719451489610?e=1720422000&v=beta&t=pXRaVWRvF0pmq-I58ChAO533pJyk0xYlIPth7w4RO0w" alt="" />
                 </div>
                 <div className="user-details">
                 <h5>Have any questions?</h5>
