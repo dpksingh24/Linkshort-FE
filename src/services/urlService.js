@@ -1,5 +1,17 @@
 import axiosInstance from '../api/axios';
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+export const getSlugAndCount = async (urlId) => {
+  try {
+    const response = await axiosInstance.get(`${BASE_URL}/urls/${urlId}/details`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching slug and count:', error);
+    throw error;
+  }
+};
+
 export const createUrl = async (urlData) => {
   const response = await axiosInstance.post('/urls', urlData);
   return response.data;
