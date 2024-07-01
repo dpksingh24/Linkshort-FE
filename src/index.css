@@ -14,7 +14,7 @@ body {
 
 
 main {
-    background: #f9f4e8;
+    background: #f0efe9;
     width: 100%;
     height: 100vh;
     display: grid;
@@ -53,7 +53,7 @@ main section.section-1 nav .nav-main .nav-logo a {
 }
 main section.section-1 nav .nav-main .nav-logo a img {
     display: block;
-    width: 120px;
+    width: 50px;
 }
 main section.section-1 nav .nav-main .nav-logo a span {
     background: rgb(234,176,82);
@@ -359,11 +359,9 @@ main section.section-1 footer .user-content .user-details h4 a {
   margin-bottom: 20px;
 }
 
-.url-info {
-  word-break: break-all;
-  margin-bottom: 10px;
+.url-info{
+    padding: 5px;
 }
-
 .url-info strong {
   font-weight: bold;
 }
@@ -383,6 +381,7 @@ main section.section-1 footer .user-content .user-details h4 a {
 }
 
 .delete-button {
+  margin-left: 10px;
   padding: 5px 10px;
   background-color: #dc3545;
   color: #fff;
