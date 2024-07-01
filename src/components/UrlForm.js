@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createUrl, getUrls, deleteUrl, getTopLevelDomains, searchUrls, getTopUrls, getSlugAndCount } from '../services/urlService';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Chart from 'chart.js/auto';
 import PolarAreaChart from './PolarAreaChart';
+import imagePath from '../images/7cfacf6e4eabce30c2b5443570735b3f.png'
 
 const UrlList = () => {
 
-    const imagePath = '../images/link-hyperlink-color-icon.svg';
 
     const [formVisible, setFormVisible] = useState(true);
     const [urls, setUrls] = useState([]);
@@ -19,7 +18,7 @@ const UrlList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchedUrls, setSearchedUrls] = useState([]);
 
-    const [copiedUrlId, setCopiedUrlId] = useState(null);
+    const [copiedUrlId, setCopiedUrlId] = useState('copy');
 
 
     // const [uRLSlug, setuRLSlug] = useState('');
@@ -38,36 +37,43 @@ const UrlList = () => {
         event.preventDefault();
         setLoading(true);
 
-        if (expiresAt && new Date(expiresAt) >= new Date()) {
-            const newUrl = { name, expires_at: expiresAt };
-                try {
-                    const response = await createUrl(newUrl);
-                    setUrls([response, ...urls]); // Add the new URL to the beginning of the list
-
-                    setName('');
-                    setExpiresAt('');
-                    setFormVisible(false);
-
-                    // const {slug, count} = await getSlugAndCount(response.id);
-                    // setuRLSlug(slug);
-                    // setuRLCount(count);
-                    // setUrlName(response.name);
-
-                    const queryParams = new URLSearchParams();
-                    queryParams.append('name', name);
-                    queryParams.append('expiresAt', expiresAt);
-                    navigate(`/url-manager?${queryParams.toString()}`);
-                }
-                catch (error) {
-                    console.error('Error creating URL:', error);
-                }
-                finally {
-                    setLoading(false);
-                }
-        } else {
-                alert('Expiration date must be a future or current date. URL not created.');
-                setLoading(false);
+        if (expiresAt && new Date(expiresAt) < new Date()) {
+            alert('Expiration date must be a future or current date. URL not created.');
+            setLoading(false);
+            return;
         }
+
+        // const newUrl = { name, expires_at: expiresAt };
+            const newUrl = { name };
+            if (expiresAt) {
+                newUrl.expires_at = expiresAt;
+            }
+            try {
+                const response = await createUrl(newUrl);
+                setUrls([response, ...urls]); // Add the new URL to the beginning of the list
+
+                setName('');
+                setExpiresAt('');
+                setFormVisible(false);
+
+                // const {slug, count} = await getSlugAndCount(response.id);
+                // setuRLSlug(slug);
+                // setuRLCount(count);
+                // setUrlName(response.name);
+
+                const queryParams = new URLSearchParams();
+                queryParams.append('name', name);
+                if (expiresAt) {
+                    queryParams.append('expiresAt', expiresAt);
+                }
+                navigate(`/url-manager?${queryParams.toString()}`);
+            }
+            catch (error) {
+                console.error('Error creating URL:', error);
+            }
+            finally {
+                setLoading(false);
+            }
     };
 
     // Function to fetch URLs from API
@@ -312,7 +318,7 @@ const UrlList = () => {
 
                 <div className="section-1-main">
                 <div className="section-1-content">
-                    <h1 className="section-1-title">Trimly will short your Long URL less than a second.</h1>
+                    <h1 className="section-1-title">Trimly: Shorten URLs Instantly</h1>
                     <p className="section-1-desc">Trimly provides efficient URL shortening for seamless link management and easy sharing.</p>
                     {formVisible ? (
                     <form className="section-1-form" onSubmit={handleSubmit}>
@@ -330,7 +336,7 @@ const UrlList = () => {
                         onChange={(e) => setExpiresAt(e.target.value)}
                     />
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : 'Submit'}
+                        {loading ? 'Loading...' : 'TRIM'}
                     </button>
                     </form>
                 ) : (
@@ -379,8 +385,7 @@ const UrlList = () => {
                     <img src="https://media.licdn.com/dms/image/D5635AQEg47d9HH0-FQ/profile-framedphoto-shrink_400_400/0/1719451489610?e=1720422000&v=beta&t=pXRaVWRvF0pmq-I58ChAO533pJyk0xYlIPth7w4RO0w" alt="" />
                     </div>
                     <div className="user-details">
-                    <h5>Have any questions?</h5>
-                    <h4><a href="https://www.linkedin.com/in/deepaksingh24" target="_blank">Talk to a specialist</a></h4>
+                    <h5><a href="https://www.linkedin.com/in/deepaksingh24" target="_blank">Have any questions?</a></h5>
                     </div>
                 </div>
                 </footer>
